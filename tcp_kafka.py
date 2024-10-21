@@ -65,6 +65,12 @@ def create_topic_if_not_exists(
     # Check if topic exists
     topics = admin_client.list_topics(timeout=10).topics
     if topic_name not in topics:
+        # The above Python code is creating a new topic in Apache Kafka. It first creates a new topic
+        # object with the specified topic name, number of partitions, and replication factor. Then, it
+        # uses an admin client to create the topic by calling
+        # `admin_client.create_topics([new_topic])`. It then iterates over the results of the creation
+        # operation and prints a success message if the topic was created successfully, or an error
+        # message if there was a failure during the creation process.
         # Create topic
         new_topic = NewTopic(topic_name, num_partitions, replication_factor)
         fs = admin_client.create_topics([new_topic])
