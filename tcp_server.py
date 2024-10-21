@@ -78,6 +78,6 @@ def create_log(message):
             writer.writerow([message
             ])
 if __name__ == "__main__":
-    ip = "192.168.10.15"  # Change to your server's IP address
+    ip = "127.0.0.1"  # Change to your server's IP address
     port = 5485  # Change to the desired port
     start_tcp_server(ip, port)
