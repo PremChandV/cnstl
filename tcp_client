@@ -1,0 +1,79 @@
+import argparse
+import socket
+
+from network_utils import get_ip_port, send_command
+
+# Comma-separated values
+# --command "0xAA,8,101,25,8,0,500,-50,0xCC"
+# --command "0xAA,8,101,39,2,9,0xCC"
+# --command "0xAA,8,101,69,100,200,10,5,1,1,0xCC"
+# --command "0xAA,8,101,43,1,1,ABC,ABC,ABC,ABC,1.5,0xCC"
+# --command "0xAA,8,100,31,0xCC"
+# --command "0xAA,8,100,31,0xCC"
+
+# RESPONSE_HEADER_SIZE = 4
+# RESPONSE_MSG_STATUS_SIZE = 2
+# RESPONSE_MSG_SIZE = 4
+# RESPONSE_GROUP_ID_SIZE = 2
+# RESPONSE_UNIT_ID_SIZE = 2
+# RESPONSE_FOOTER_SIZE = 4
+
+# Set Threshold,101,25,26,8,0,"[{'PARAMETER_NAME': 'ADC Channel Number', 'MESSAGE_SIZE': 1, 'DATA_TYPE': 'unsigned char', 'VALUE': 'ABC', 'MINIMUM_RANGE': 1, 'MAXIMUM_RANGE': 8, 'UNITS': None, 'PARAMETER_TYPE': 'Request'}, {'PARAMETER_NAME': 'Reserved', 'MESSAGE_SIZE': 1, 'DATA_TYPE': 'unsigned char', 'VALUE': 'ABC', 'MINIMUM_RANGE': 0, 'MAXIMUM_RANGE': None, 'UNITS': None, 'PARAMETER_TYPE': 'Request'}, {'PARAMETER_NAME': 'Integration Time Sel', 'MESSAGE_SIZE': 2, 'DATA_TYPE': 'unsigned short', 'VALUE': 1, 'MINIMUM_RANGE': 0, 'MAXIMUM_RANGE': 1000, 'UNITS': 'us', 'PARAMETER_TYPE': 'Request'}, {'PARAMETER_NAME': 'Threshold', 'MESSAGE_SIZE': 4, 'DATA_TYPE': 'float', 'VALUE': 1.5, 'MINIMUM_RANGE': -100, 'MAXIMUM_RANGE': 0, 'UNITS': 'dBm', 'PARAMETER_TYPE': 'Request'}]",[{}]
+
+# def create_command_message(command):
+#     return command.encode()
+
+
+# def main():
+#     #ip, port = get_ip_port()
+#     while True:
+
+#         parser = argparse.ArgumentParser(description="Send command messages.")
+#         parser.add_argument('--command', type=str, help="Command data in CSV format")
+#         args = parser.parse_args()
+
+#         if not args.command:
+#             args.command = input("Please enter the command: ")
+
+#         message = create_command_message(args.command)
+
+#         send_command("192.168.158.75", 1234, message)
+
+# if __name__ == "__main__":
+#     main()
+
+# b"\xaa\xab\xba\xbb\x00\x00\x00\x00\x00d\x00\x1f\xcc\xcd\xdc\xdd"
+# b"\xaa\xab\xba\xbb\x00\x00\x00\x00\x00\x08\x00\x65\x00\x19\x01\x01\x02\x00\x00\x00\x80\x3f\xcc\xcd\xdc\xdd"
+#b"\xaa\xab\xba\xbb\x00\x00\x00\x08\x00\x65\x00\x45\x01\x01\x00\x02\x00\x00\x80\x3f\xcc\xcd\xdc\xdd"
+
+"""
+    The `send_data` function sends a specific set of data to a specified host and port.
+    
+    :param host: The `host` parameter in the `send_data` function specifies the IP address of the host
+    to which the data will be sent. In this case, the default IP address is set to "192.168.10.15",
+    defaults to 192.168.10.15 (optional)
+    :param port: The `port` parameter in the `send_data` function specifies the port number to which the
+    data will be sent. In this case, the default port number is set to 5485. If no port number is
+    provided when calling the function, it will default to using port 5485 for, defaults to 5485
+    (optional)
+    :param data: The `data` parameter in the `send_data` function is a byte string containing
+    hexadecimal values. It appears to be a specific data payload that will be sent to the specified host
+    and port. The byte string represents a sequence of bytes that will be transmitted over the network,
+    defaults to
+    b"\xaa\xab\xba\xbb\x00\x00\x00\x08\x00\x65\x00\x53\x01\x01\x00\x02\x00\x00\x80\x3f\xcc\xcd\xdc\xdd"
+    (optional)
+"""
+def send_data(
+    host="127.0.0.1",
+    port = 5485,
+    data=b"\xaa\xab\xba\xbb\x00\x00\x00\x08\x00\x65\x00\x53\x01\x01\x00\x02\x00\x00\x80\x3f\xcc\xcd\xdc\xdd",
+):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+        client_socket.connect((host, port))
+        client_socket.sendall(data)
+        response = client_socket.recv(4096)
+        print(f"Data sent: {data}")
+        print("Received Response:", response)
+
+if __name__ == "__main__":
+    send_data()
