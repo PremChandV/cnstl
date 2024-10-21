@@ -37,7 +37,7 @@ SRX_REQUEST_TOPIC = "srx.drs.request.test"
 SRX_RESPONSE_TOPIC = "srx.drs.response.test"
 SRX_UI_REQUEST_TOPIC = "srx.drs.ui.req.param"
 SRX_UI_RESPONSE_TOPIC = "srx.drs.ui.res.param"
-BOOTSTRAP_SERVER = "192.168.10.15:9092"
+BOOTSTRAP_SERVER = "127.0.0.1:9092"
 GROUP_ID = "SRX"
 
 
@@ -421,7 +421,7 @@ def create_log(message):
 # The above Python code is checking if the script is being run as the main program using the `if
 # __name__ == "__main__":` condition. It then sets the IP address and port number variables.
 if __name__ == "__main__":
-    ip = "192.168.10.15"
+    ip = "127.0.0.1"
     port = 5485
     if constants.IS_RANDOM:
         tcp.start_tcp_server(ip, port)
