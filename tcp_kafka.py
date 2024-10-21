@@ -63,6 +63,8 @@ def create_topic_if_not_exists(
     Kafka cluster for fault tolerance and high availability. It ensures
     """
     # Check if topic exists
+    # The code is attempting to retrieve a list of topics using an admin client with a timeout of 10
+    # seconds. It then checks if a specific topic name is not in the list of topics retrieved.
     topics = admin_client.list_topics(timeout=10).topics
     if topic_name not in topics:
         # The above Python code is creating a new topic in Apache Kafka. It first creates a new topic
